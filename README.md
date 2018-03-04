@@ -2,6 +2,12 @@
 
 Simple Git commands Cheat Sheet
 
+## Initialize a git folder
+
+```bash
+git init
+```
+
 ## User config
 
 ```bash
@@ -44,7 +50,7 @@ touch [FILE]
 git add [FILE]
 
 # untrack file (use `git reset` without argument to reset all changes)
-git reset [FILE]
+git reset -- [FILE]
 ```
 
 - For existing file
@@ -57,7 +63,7 @@ echo "some content..." >> [FILE]
 git add [FILE]
 
 # Unstage the file but keep the modification
-git reset [FILE]
+git reset -- [FILE]
 
 # Revert modification (ONLY for unstaged file)
 git checkout -- [FILE]
@@ -74,7 +80,7 @@ echo "some content..." >> [FILE2]
 git add [FILE1]
 
 # Restore the working tree to HEAD
-git reset --hard
+git reset -- --hard
 ```
 
 ## Delete file from the index and the working tree
@@ -93,7 +99,7 @@ git rm --force [FILE1]
 ## Delete file from the index but keep it in the working tree
 
 ```bash
-# delete file (modified or not, staged or not) from the index but keep it in the working tree (with its modification)
+# delete file (modified or not, staged or not) from the index but intact keep it in the working tree
 # (the file will be marked as untracked)
 git rm --cached [FILE]
 ```
