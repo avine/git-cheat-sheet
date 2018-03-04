@@ -26,7 +26,7 @@ git log --oneline --graph --decorate
 
 ```bash
 # list all branches
-git branch -a
+git branch --all
 
 # create new branch
 git branch [NAME]
@@ -36,6 +36,12 @@ git checkout [NAME]
 
 # create and checkout new branch
 git checkout -b [NAME]
+
+# delete a fully merged branch
+git branch --delete [NAME]
+
+# delete a branch merged or not
+git branch --delete --force [NAME]
 ```
 
 ## Staging and Unstaging
@@ -69,7 +75,7 @@ git reset -- [FILE]
 git checkout -- [FILE]
 ```
 
-## Revert all changes (stagged on not)
+## Revert all changes (staged on not)
 
 ```bash
 # modify multiple files
@@ -143,4 +149,68 @@ git commit --amend --no-edit
 
 # Overwrite the history on the remote server
 git push --force
+```
+
+## Merging and rebasing branches
+
+Create 2 new branches from master.
+
+```bash
+git branch feature-one master
+git branch feature-two master
+```
+
+Work on the `feature-one`.
+
+```bash
+git checkout feature-one
+
+# create a new file
+touch fruits.txt
+
+# modify, stage and commit
+echo "Orange" > fruits.txt
+git add fruits.txt
+git commit -m "Add orange"
+
+# modify, stage and do another commit
+echo "Banana" >> fruits.txt
+git add fruits.txt
+git commit -m "Add banana"
+
+# rebase from master before merge (at this point this is useless...)
+# go back to master
+# merge feature-one into master (with no fast-forward)
+git rebase master
+git checkout master
+git merge feature-one --no-ff -m "Merge feature-one"
+```
+
+Work the same way on the `feature-two`.
+
+```bash
+git checkout feature-two
+
+touch technos.txt
+
+echo "NodeJs" > technos.txt
+git add technos.txt
+git commit -m "Add NodeJs"
+
+echo "Java" >> technos.txt
+git add technos.txt
+git commit -m "Add Java"
+
+# but this time, rebasing from master before merge will do the trick!
+git rebase master
+git checkout master
+git merge feature-two --no-ff -m "Merge feature-two"
+```
+
+Note: without rebasing from master before merging, the log history will not have been so clear!
+
+Now, verify that the log history of the master branch is clean! we did it!
+
+```bash
+git log --oneline --graph --decorate
 ```
