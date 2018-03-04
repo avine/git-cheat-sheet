@@ -215,6 +215,11 @@ Now, verify that the log history of the master branch is clean! we did it!
 git log --oneline --graph --decorate
 ```
 
+TODO: expliquer qu'avec --no-ff on gagne qu'on peut faire ensuite `git log --merges`
+pour voir uniquement les merges!!!
+
+TODO: et une autre alternative est de faire uniquement des fast-forward...
+
 ## Fetching from remote
 
 ```bash
