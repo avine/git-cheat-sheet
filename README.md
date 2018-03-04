@@ -34,7 +34,7 @@ git branch [NAME]
 # checkout existing branch
 git checkout [NAME]
 
-# create and checkout new branch
+# or create and checkout new branch at once!
 git checkout -b [NAME]
 
 # delete a fully merged branch
@@ -214,3 +214,21 @@ Now, verify that the log history of the master branch is clean! we did it!
 ```bash
 git log --oneline --graph --decorate
 ```
+
+## Fetching from remote
+
+```bash
+# back to master branch
+git checkout master
+
+# fetch changes from remote server
+git fetch
+
+# apply changes using rebase strategy (not merge)
+git rebase
+
+# or fetch and rebase at once!
+git pull --rebase
+```
+
+Now that you local repository is up-to-date, you can merge your feature branches on master as we did in the previous section.
