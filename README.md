@@ -28,62 +28,62 @@ git log --oneline --graph --decorate
 # list all branches
 git branch --all
 
-# create new branch
-git branch [NAME]
+# create new branch of master
+git branch feature-one master
 
 # checkout existing branch
-git checkout [NAME]
+git checkout feature-one
 
 # or create and checkout new branch at once!
-git checkout -b [NAME]
+git checkout -b feature-one master
 
 # delete a fully merged branch
-git branch --delete [NAME]
+git branch --delete feature-one
 
 # delete a branch merged or not
-git branch --delete --force [NAME]
+git branch --delete --force feature-one
 ```
 
 ## Staging and Unstaging
 
-For new file
+For new file:
 
 ```bash
 # creating new untracked file...
-touch [FILE]
+touch foo.txt
 
 # add file to the index (tracking and staging)
-git add [FILE]
+git add foo.txt
 
 # untrack file (use `git reset` without argument to reset all changes)
-git reset -- [FILE]
+git reset -- foo.txt
 ```
 
-For existing file
+For existing file:
 
 ```bash
 # modify file
-echo "some content..." >> [FILE]
+echo "Foo..." >> foo.txt
 
 # Staging the modification
-git add [FILE]
+git add foo.txt
 
 # Unstage the file but keep the modification
-git reset -- [FILE]
+git reset -- foo.txt
 
 # Revert modification (ONLY for unstaged file)
-git checkout -- [FILE]
+git checkout -- foo.txt
 ```
 
 ## Revert all changes (staged on not)
 
 ```bash
 # modify multiple files
-echo "some content..." >> [FILE1]
-echo "some content..." >> [FILE2]
+echo "Foo..." >> foo.txt
+echo "Bar..." >> bar.txt
 
 # Staging one of them
-git add [FILE1]
+git add foo.txt
 
 # Restore the working tree to HEAD
 git reset -- --hard
@@ -93,13 +93,13 @@ git reset -- --hard
 
 ```bash
 # delete unmodified file from the index and the working tree
-git rm [FILE1]
+git rm foo.txt
 
 # modify file
-echo "some content..." >> [FILE2]
+echo "More Bar..." >> bar.txt
 
 # delete modified file (staged or not) from the index and the working tree
-git rm --force [FILE1]
+git rm --force bar.txt
 ```
 
 ## Delete file from the index but keep it in the working tree
@@ -107,26 +107,26 @@ git rm --force [FILE1]
 ```bash
 # delete file (modified or not, staged or not) from the index but intact keep it in the working tree
 # (the file will be marked as untracked)
-git rm --cached [FILE]
+git rm --cached foo.txt
 ```
 
 ## Commit changes and amend last commit before push
 
 ```bash
 # modify file
-echo "Hello" >> [FILE]
+echo "Hello" >> foo.txt
 
 # staging file
-git add [FILE]
+git add foo.txt
 
 # commit changes with message
 git commit --message "Hello World!"
 
 # Oups! We forgot something!
-echo "World!" >> [FILE]
+echo "World!" >> foo.txt
 
 # staging file
-git add [FILE]
+git add foo.txt
 
 # commit changes without modifying the message
 git commit --amend --no-edit
@@ -143,8 +143,8 @@ Do this ONLY if you DON'T work with a team!
 # Push some previous commit to the remote server
 git push
 
-echo "more..." >> [FILE]
-git add [FILE]
+echo "More Foo..." >> foo.txt
+git add foo.txt
 git commit --amend --no-edit
 
 # Overwrite the history on the remote server
@@ -230,13 +230,13 @@ Note: another strategy is to always rebase and do fast-forward merges in order t
 git checkout master
 
 # fetch changes from remote server
-git fetch
+git fetch origin master
 
 # apply changes using rebase strategy (not merge)
-git rebase
+git rebase origin master
 
 # or fetch and rebase at once!
-git pull --rebase
+git pull --rebase origin master
 ```
 
 Now that you local repository is up-to-date, you can merge your feature branches on master as we did in the previous section.
