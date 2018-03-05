@@ -225,7 +225,7 @@ Note: another strategy you an choose is to always rebase and do fast-forward mer
 
 ## Working remotely
 
-### Push local repository to remote repository
+**Push local repository to remote repository:**
 
 ```bash
 # create and navigate to new local repository
@@ -249,7 +249,7 @@ git remote --verbose
 git push --set-upstream origin master
 ```
 
-## Clone remote repository locally
+**Clone remote repository locally:**
 
 ```bash
 # clone remote repository
