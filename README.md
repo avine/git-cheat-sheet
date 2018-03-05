@@ -46,7 +46,7 @@ git branch --delete --force feature-one
 
 ## Staging and Unstaging
 
-For new file:
+**For new untracked file:**
 
 ```bash
 # creating new untracked file...
@@ -59,7 +59,7 @@ git add foo.txt
 git reset -- foo.txt
 ```
 
-For existing file:
+**For already committed file:**
 
 ```bash
 # modify file
@@ -203,7 +203,7 @@ git commit -am "Add NodeJs"
 echo "Java" >> technos.txt
 git commit -am "Add Java"
 
-# but this time, rebasing from master before merge will do the trick!
+# but this time, rebasing from master before merging will do the trick!
 git rebase master
 git checkout master
 git merge feature-two --no-ff -m "Merge feature-two"
@@ -221,16 +221,61 @@ Another benefit of using branches and always merging with no fast-forward allows
 git log --oneline --graph --decorate --merges
 ```
 
-Note: another strategy is to always rebase and do fast-forward merges in order to have a single line of history.
+Note: another strategy you an choose is to always rebase and do fast-forward merges in order to have a single line of history.
 
-## Fetching from remote
+## Working remotely
+
+### Push local repository to remote repository
+
+```bash
+# create and navigate to new local repository
+mkdir myrepo
+cd myrepo
+
+# init a local repository with a branch called "master"
+git init
+
+# create and commit file
+touch README.md
+git commit -am "First commit"
+
+# set url of a remote repository called "origin"
+git remote add origin https://github.com/myuser/myrepo.git
+
+# verify added remote
+git remote --verbose
+
+# push local branch master to remote origin
+git push --set-upstream origin master
+```
+
+## Clone remote repository locally
+
+```bash
+# clone remote repository
+git clone https://github.com/myuser/myrepo.git
+
+# navigate to local repository
+cd myrepo
+```
+
+
+
+---
+WORK IN PROGRESS...
+
+## Fetching from remote server
+
+Assuming that new commits are available from remote server.
+Thoses commits have been done by another developer.
+And we also have finished our feature and we are ready to merge them into the master.
 
 ```bash
 # back to master branch
 git checkout master
 
-# fetch changes from remote server
-git fetch origin master
+# fetch changes from origin
+git fetch origin
 
 # apply changes using rebase strategy (not merge)
 git rebase origin master
@@ -240,3 +285,9 @@ git pull --rebase origin master
 ```
 
 Now that you local repository is up-to-date, you can merge your feature branches on master as we did in the previous section.
+
+
+
+
+TODO: diff entre 2 commits...
+TODO: parler de "git push --set-upstream origin feat-1"
