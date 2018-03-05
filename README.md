@@ -1,17 +1,17 @@
 # git-cheat-sheet
 
-Simple Git commands Cheat Sheet
+Simple GIT commands that produce a clean log history
 
-## Initialize Git repository
+## Initialize repository
 
-**Create a local repository:**
+**Create local repo:**
 
 ```bash
-# create and navigate to new local repository
+# create and navigate to new local repo
 mkdir myrepo
 cd myrepo
 
-# init a local repository with a branch called "master"
+# init local repo with branch called "master"
 git init
 
 # create and commit file
@@ -19,36 +19,36 @@ touch README.md
 git add README.md
 git commit --message "First commit"
 
-# set url of a remote repository called "origin"
+# set url of remote repo called "origin"
 git remote add origin https://github.com/myuser/myrepo.git
 
 # verify added remote
 git remote --verbose
 
-# push local branch "master" to remote repository "origin"
+# push local branch "master" to remote repo "origin"
 git push --set-upstream origin master
 ```
 
-**Clone a n existing remote repository:**
+**Clone existing remote repo:**
 
 ```bash
-# clone remote repository
+# clone remote repo
 git clone https://github.com/myuser/myrepo.git
 
-# navigate to local repository
+# navigate to local repo
 cd myrepo
 ```
 
 ## User config
 
-Configure your user name and email before commiting.
+Configure user name and email before commiting.
 
 ```bash
 git config user.name "Stéphane Francel"
 git config user.email contact@avine.io
 ```
 
-## Status and Log
+## Status and log
 
 ```bash
 git status
@@ -77,7 +77,7 @@ git branch --delete feature-one
 git branch --delete --force feature-one
 ```
 
-## Staging and Unstaging
+## Staging and unstaging
 
 **For new untracked file:**
 
@@ -98,13 +98,13 @@ git reset -- foo.txt
 # modify file
 echo "Foo..." >> foo.txt
 
-# Staging the modification
+# staging the modification
 git add foo.txt
 
-# Unstage the file but keep the modification
+# unstage the file but keep the modification
 git reset -- foo.txt
 
-# Revert modification (ONLY for unstaged file)
+# revert modification (ONLY for unstaged file)
 git checkout -- foo.txt
 ```
 
@@ -115,7 +115,7 @@ git checkout -- foo.txt
 echo "Foo..." >> foo.txt
 echo "Bar..." >> bar.txt
 
-# Staging one of them
+# staging one of them
 git add foo.txt
 
 # Restore the working tree to HEAD
@@ -190,16 +190,16 @@ git push --force
 git commit --amend --author "John Doe <johndoe@avine.io>"
 ```
 
-## Merging and rebasing branches
+## Merging and rebasing
 
-Assuming someone works on the `feature-one`.
+Assuming someone works on `feature-one`.
 
 ```bash
-# clone repository and checkout a new branch
+# clone repo and checkout new branch
 git clone https://github.com/myuser/myrepo.git
 git checkout -b feature-one
 
-# create a new file
+# create new file
 touch fruits.txt
 
 # modify, add and commit
@@ -212,7 +212,7 @@ echo "Banana" >> fruits.txt
 git commit -am "Add banana"
 ```
 
-Meanwhile, someone else was working on the `feature-two`...
+Meanwhile, someone else was working on `feature-two`...
 
 ```bash
 git clone https://github.com/myuser/myrepo.git
@@ -244,10 +244,10 @@ git push origin
 Now, how can the other developer also push his work ?
 
 ```bash
-# from branch feature-two, update branch master
+# from branch feature-two, update branch master...
 git fetch origin master:master
 
-# rebase from master before merge (this will do the trick!)
+# ...and rebase from master before merge (this will do the trick!)
 git rebase master
 
 # back to branch master, merge feature-two into master (with no fast-forward)
@@ -300,7 +300,7 @@ git rebase origin master
 git pull --rebase origin master
 ```
 
-Now that you local repository is up-to-date, you can merge your feature branches on master as we did in the previous section.
+Now that you local repo is up-to-date, you can merge your feature branches on master as we did in the previous section.
 
 
 
