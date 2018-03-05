@@ -176,9 +176,10 @@ touch fruits.txt
 
 # modify, add and commit
 echo "Orange" > fruits.txt
-git commit -am "Add orange"
+git add fruits.txt
+git commit -m "Add orange"
 
-# modify, add and commit again
+# modify, add and commit again (option -am works for already tracked file)
 echo "Banana" >> fruits.txt
 git commit -am "Add banana"
 
@@ -198,7 +199,8 @@ git checkout feature-two
 touch technos.txt
 
 echo "NodeJs" > technos.txt
-git commit -am "Add NodeJs"
+git add technos.txt
+git commit -m "Add NodeJs"
 
 echo "Java" >> technos.txt
 git commit -am "Add Java"
