@@ -2,13 +2,46 @@
 
 Simple Git commands Cheat Sheet
 
-## Initialize a git folder
+## Initialize Git repository
+
+**Create a local repository:**
 
 ```bash
+# create and navigate to new local repository
+mkdir myrepo
+cd myrepo
+
+# init a local repository with a branch called "master"
 git init
+
+# create and commit file
+touch README.md
+git add README.md
+git commit --message "First commit"
+
+# set url of a remote repository called "origin"
+git remote add origin https://github.com/myuser/myrepo.git
+
+# verify added remote
+git remote --verbose
+
+# push local branch "master" to remote repository "origin"
+git push --set-upstream origin master
+```
+
+**Clone a n existing remote repository:**
+
+```bash
+# clone remote repository
+git clone https://github.com/myuser/myrepo.git
+
+# navigate to local repository
+cd myrepo
 ```
 
 ## User config
+
+Configure your user name and email before commiting.
 
 ```bash
 git config user.name "Stéphane Francel"
@@ -159,17 +192,12 @@ git commit --amend --author "John Doe <johndoe@avine.io>"
 
 ## Merging and rebasing branches
 
-Create 2 new branches from master.
+Assuming someone works on the `feature-one`.
 
 ```bash
-git branch feature-one master
-git branch feature-two master
-```
-
-Work on the `feature-one`.
-
-```bash
-git checkout feature-one
+# clone repository and checkout a new branch
+git clone https://github.com/myuser/myrepo.git
+git checkout -b feature-one
 
 # create a new file
 touch fruits.txt
@@ -182,19 +210,13 @@ git commit -m "Add orange"
 # modify, add and commit again (option -am works for already tracked file)
 echo "Banana" >> fruits.txt
 git commit -am "Add banana"
-
-# rebase from master before merge (at this point this is useless...)
-# go back to master
-# merge feature-one into master (with no fast-forward)
-git rebase master
-git checkout master
-git merge feature-one --no-ff -m "Merge feature-one"
 ```
 
-Work the same way on the `feature-two`.
+Meanwhile, someone else was working on the `feature-two`...
 
 ```bash
-git checkout feature-two
+git clone https://github.com/myuser/myrepo.git
+git checkout -b feature-two
 
 touch technos.txt
 
@@ -204,62 +226,54 @@ git commit -m "Add NodeJs"
 
 echo "Java" >> technos.txt
 git commit -am "Add Java"
+```
 
-# but this time, rebasing from master before merging will do the trick!
+Next, the first developer is pushing his work.
+
+```bash
+# leave branch feature-one and go back to branch master
+git checkout master
+
+# merge feature-one into master (with no fast-forward)
+git merge feature-one --no-ff -m "Merge feature-one"
+
+# push commits to remote origin
+git push origin
+```
+
+Now, how can the other developer also push his work ?
+
+```bash
+# from branch feature-two, update branch master
+git fetch origin master:master
+
+# rebase from master before merge (this will do the trick!)
 git rebase master
+
+# back to branch master, merge feature-two into master (with no fast-forward)
 git checkout master
 git merge feature-two --no-ff -m "Merge feature-two"
+
+# push commits to remote origin
+git push origin
 ```
 
 Note: without rebasing from master before merging, the log history will not have been so clean!
+
+Try to log history to see the result.
 
 ```bash
 git log --oneline --graph --decorate
 ```
 
-Another benefit of using branches and always merging with no fast-forward allows us to view each feature as a single merge commit.
+Merging branches with no fast-forward allows us to view each feature as a single merge commit.
 
 ```bash
 git log --oneline --graph --decorate --merges
 ```
 
-Note: another strategy you an choose is to always rebase and do fast-forward merges in order to have a single line of history.
+Note: another strategy you an choose, is to always rebase and do fast-forward merges in order to have a single line of history.
 
-## Working remotely
-
-**Push local repository to remote repository:**
-
-```bash
-# create and navigate to new local repository
-mkdir myrepo
-cd myrepo
-
-# init a local repository with a branch called "master"
-git init
-
-# create and commit file
-touch README.md
-git commit -am "First commit"
-
-# set url of a remote repository called "origin"
-git remote add origin https://github.com/myuser/myrepo.git
-
-# verify added remote
-git remote --verbose
-
-# push local branch master to remote origin
-git push --set-upstream origin master
-```
-
-**Clone remote repository locally:**
-
-```bash
-# clone remote repository
-git clone https://github.com/myuser/myrepo.git
-
-# navigate to local repository
-cd myrepo
-```
 
 
 
