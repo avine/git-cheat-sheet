@@ -46,7 +46,7 @@ git branch --delete --force [NAME]
 
 ## Staging and Unstaging
 
-- For new file
+For new file
 
 ```bash
 # creating new untracked file...
@@ -59,7 +59,7 @@ git add [FILE]
 git reset -- [FILE]
 ```
 
-- For existing file
+For existing file
 
 ```bash
 # modify file
@@ -128,7 +128,7 @@ echo "World!" >> [FILE]
 # staging file
 git add [FILE]
 
-# commit changes with message
+# commit changes without modifying the message
 git commit --amend --no-edit
 
 # push modified commit to the remote server
@@ -151,6 +151,12 @@ git commit --amend --no-edit
 git push --force
 ```
 
+## Amend last commit author
+
+```bash
+git commit --amend --author "John Doe <johndoe@avine.io>"
+```
+
 ## Merging and rebasing branches
 
 Create 2 new branches from master.
@@ -168,15 +174,13 @@ git checkout feature-one
 # create a new file
 touch fruits.txt
 
-# modify, stage and commit
+# modify, add and commit
 echo "Orange" > fruits.txt
-git add fruits.txt
-git commit -m "Add orange"
+git commit -am "Add orange"
 
-# modify, stage and do another commit
+# modify, add and commit again
 echo "Banana" >> fruits.txt
-git add fruits.txt
-git commit -m "Add banana"
+git commit -am "Add banana"
 
 # rebase from master before merge (at this point this is useless...)
 # go back to master
@@ -194,12 +198,10 @@ git checkout feature-two
 touch technos.txt
 
 echo "NodeJs" > technos.txt
-git add technos.txt
-git commit -m "Add NodeJs"
+git commit -am "Add NodeJs"
 
 echo "Java" >> technos.txt
-git add technos.txt
-git commit -m "Add Java"
+git commit -am "Add Java"
 
 # but this time, rebasing from master before merge will do the trick!
 git rebase master
@@ -207,18 +209,19 @@ git checkout master
 git merge feature-two --no-ff -m "Merge feature-two"
 ```
 
-Note: without rebasing from master before merging, the log history will not have been so clear!
-
-Now, verify that the log history of the master branch is clean! we did it!
+Note: without rebasing from master before merging, the log history will not have been so clean!
 
 ```bash
 git log --oneline --graph --decorate
 ```
 
-TODO: expliquer qu'avec --no-ff on gagne qu'on peut faire ensuite `git log --merges`
-pour voir uniquement les merges!!!
+Another benefit of using branches and always merging with no fast-forward allows us to view each feature as a single merge commit.
 
-TODO: et une autre alternative est de faire uniquement des fast-forward...
+```bash
+git log --oneline --graph --decorate --merges
+```
+
+Note: another strategy is to always rebase and do fast-forward merges in order to have a single line of history.
 
 ## Fetching from remote
 
