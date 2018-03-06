@@ -29,7 +29,7 @@ git remote --verbose
 git push --set-upstream origin master
 ```
 
-**Clone existing remote repo:**
+**Or clone existing remote repo locally:**
 
 ```bash
 # clone remote repo
@@ -73,7 +73,7 @@ git checkout -b feature-one master
 # delete a fully merged branch
 git branch --delete feature-one
 
-# delete a branch merged or not
+# delete a branch whether merged or not
 git branch --delete --force feature-one
 ```
 
@@ -95,8 +95,8 @@ git reset -- foo.txt
 **For already committed file:**
 
 ```bash
-# modify file
-echo "Foo..." >> foo.txt
+# modify file previously committed
+echo "More Foo..." >> foo.txt
 
 # staging the modification
 git add foo.txt
@@ -138,10 +138,11 @@ git rm --force bar.txt
 ## Delete file from the index but keep it in the working tree
 
 ```bash
-# delete file (modified or not, staged or not) from the index but intact keep it in the working tree
-# (the file will be marked as untracked)
+# delete file (modified or not, staged or not) from the index but keep it in the working tree
 git rm --cached foo.txt
 ```
+
+After that, the file will be marked as untracked.
 
 ## Commit changes and amend last commit before push
 
@@ -161,28 +162,32 @@ echo "World!" >> foo.txt
 # staging file
 git add foo.txt
 
-# commit changes without modifying the message
+# amend the last commit (without modifying the message)
 git commit --amend --no-edit
 
-# push modified commit to the remote server
+# push modified commit to the remote server safely
 git push
 ```
 
 ## Amend last commit after push
 
-Do this ONLY if you DON'T work with a team!
-
 ```bash
 # Push some previous commit to the remote server
 git push
 
-echo "More Foo..." >> foo.txt
-git add foo.txt
+# Oups! We forgot something!
+touch baz.txt
+echo "Baz..." > baz.txt
+git add baz.txt
+
+# adding baz.txt to the last commit
 git commit --amend --no-edit
 
 # Overwrite the history on the remote server
 git push --force
 ```
+
+Do this ONLY if you DON'T work with a team!
 
 ## Amend last commit author
 
@@ -212,6 +217,15 @@ echo "Banana" >> fruits.txt
 git commit -am "Add banana"
 ```
 
+*Logo history of branch feature-one:*
+
+```txt
+$ git log --oneline --graph --decorate
+* 484dbf6 (HEAD -> feature-one) Add banana
+* c7fc421 Add orange
+* 0285f89 (origin/master, origin/HEAD, master) Initial commit
+```
+
 Meanwhile, someone else was working on `feature-two`...
 
 ```bash
@@ -228,6 +242,15 @@ echo "Java" >> technos.txt
 git commit -am "Add Java"
 ```
 
+*Logo history of branch feature-two:*
+
+```txt
+$ git log --oneline --graph --decorate
+* 64364db (HEAD -> feature-two) Add Java
+* 120e8c2 Add NodeJs
+* 0285f89 (origin/master, origin/HEAD, master) Initial commit
+```
+
 Next, the first developer is pushing his work.
 
 ```bash
@@ -239,6 +262,17 @@ git merge feature-one --no-ff -m "Merge feature-one"
 
 # push commits to remote origin
 git push origin
+```
+
+*Logo history of branch master:*
+
+```txt
+*   0f6ca39 (HEAD -> master, origin/master, origin/HEAD) Merge feature-one
+|\
+| * 484dbf6 (feature-one) Add banana
+| * c7fc421 Add orange
+|/
+* 0285f89 Initial commit
 ```
 
 Now, how can the other developer also push his work ?
@@ -258,23 +292,44 @@ git merge feature-two --no-ff -m "Merge feature-two"
 git push origin
 ```
 
-Note: without rebasing from master before merging, the log history will not have been so clean!
+*Logo history of branch master:*
 
-Try to log history to see the result.
-
-```bash
-git log --oneline --graph --decorate
+```txt
+$ git log --oneline --graph --decorate
+*   8e5a570 (HEAD -> master, origin/master, origin/HEAD) Merge feature-two
+|\
+| * 0aa4f57 (feature-two) Add Java
+| * 1ad2fe8 Add NodeJs
+|/
+*   0f6ca39 Merge feature-one
+|\
+| * 484dbf6 Add banana
+| * c7fc421 Add orange
+|/
+* 0285f89 Initial commit
 ```
 
+Note: without rebasing from master before merging, the log history will not have been so clean!
+
+We can also get a summary of branch master without the intermediate commits with the `--merges` option.
 Merging branches with no fast-forward allows us to view each feature as a single merge commit.
 
-```bash
-git log --oneline --graph --decorate --merges
+```txt
+$ git log --oneline --graph --decorate --merges
+* 8e5a570 (HEAD -> master, origin/master, origin/HEAD) Merge feature-two
+* 0f6ca39 Merge feature-one
 ```
 
 Note: another strategy you an choose, is to always rebase and do fast-forward merges in order to have a single line of history.
 
-
+```txt
+$ git log --oneline --graph --decorate
+* eee05a6 (HEAD -> master, origin/master, origin/HEAD, feature-two) Add Java
+* 4801abf Add NodeJs
+* 8ec6840 Add banana
+* cc3fdad Add orange
+* 0285f89 Initial commit
+```
 
 
 ---
