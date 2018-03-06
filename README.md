@@ -346,7 +346,7 @@ $  git log --oneline --graph --decorate
 * 0285f89 Initial commit
 ```
 
-### Using "fast forward" strategy
+### Using "fast forward only" strategy
 
 Another strategy you an choose is to always use `git merge --ff-only` instead of `git merge --no-ff`
 
