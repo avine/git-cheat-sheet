@@ -197,7 +197,7 @@ git commit --amend --author "John Doe <johndoe@avine.io>"
 
 ## Rebasing and merging
 
-### With "no fast forward" strategy
+### Using "no fast forward" strategy
 
 Assuming someone works on `feature-one`.
 
@@ -346,7 +346,7 @@ $  git log --oneline --graph --decorate
 * 0285f89 Initial commit
 ```
 
-### With "fast forward" strategy
+### Using "fast forward" strategy
 
 Another strategy you an choose is to always use `git merge --ff-only` instead of `git merge --no-ff`
 
