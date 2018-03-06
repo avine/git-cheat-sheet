@@ -7,7 +7,7 @@ Simple GIT commands that produce a clean log history
 *Create local repo:*
 
 ```bash
-# create and navigate to new local repo
+# create new folder and navigate into it
 mkdir myrepo
 cd myrepo
 
@@ -118,7 +118,7 @@ echo "Bar..." >> bar.txt
 # staging one of them
 git add foo.txt
 
-# Restore the working tree to HEAD
+# restore the working tree to HEAD
 git reset --hard
 ```
 
@@ -156,7 +156,7 @@ git add foo.txt
 # commit changes with message
 git commit --message "Hello World!"
 
-# Oups! We forgot something!
+# oups! we forgot something!
 echo "World!" >> foo.txt
 
 # staging file
@@ -175,7 +175,7 @@ git push
 # push some previous commit to the remote server
 git push
 
-# oups! We forgot something!
+# oups! we forgot something!
 touch baz.txt
 echo "Baz..." > baz.txt
 git add baz.txt
@@ -219,7 +219,7 @@ echo "Banana" >> fruits.txt
 git commit -am "Add Banana"
 ```
 
-*Log history of branch feature-one:*
+*Log history of branch `feature-one`:*
 
 ```txt
 $ git log --oneline --graph --decorate
@@ -244,7 +244,7 @@ echo "Java" >> technos.txt
 git commit -am "Add Java"
 ```
 
-*Log history of branch feature-two:*
+*Log history of branch `feature-two`:*
 
 ```txt
 $ git log --oneline --graph --decorate
@@ -266,7 +266,7 @@ git merge feature-one --no-ff -m "Merge feature-one"
 git push origin
 ```
 
-*Log history of branch master:*
+*Log history of branch `master`:*
 
 ```txt
 *   0f6ca39 (HEAD -> master, origin/master, origin/HEAD) Merge feature-one
@@ -298,7 +298,7 @@ git merge feature-two --no-ff -m "Merge feature-two"
 git push origin
 ```
 
-*Log history of branch master:*
+*Log history of branch `master`:*
 
 ```txt
 $ git log --oneline --graph --decorate
