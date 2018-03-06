@@ -4,7 +4,7 @@ Simple GIT commands that produce a clean log history
 
 ## Initialize repository
 
-**Create local repo:**
+*Create local repo:*
 
 ```bash
 # create and navigate to new local repo
@@ -29,7 +29,7 @@ git remote --verbose
 git push --set-upstream origin master
 ```
 
-**Or clone existing remote repo locally:**
+*Or clone existing remote repo locally:*
 
 ```bash
 # clone remote repo
@@ -79,7 +79,7 @@ git branch --delete --force feature-one
 
 ## Staging and unstaging
 
-**For new untracked file:**
+*For new untracked file:*
 
 ```bash
 # creating new untracked file...
@@ -92,7 +92,7 @@ git add foo.txt
 git reset -- foo.txt
 ```
 
-**For already committed file:**
+*For already committed file:*
 
 ```bash
 # modify file previously committed
@@ -119,7 +119,7 @@ echo "Bar..." >> bar.txt
 git add foo.txt
 
 # Restore the working tree to HEAD
-git reset -- --hard
+git reset --hard
 ```
 
 ## Delete file from the index and the working tree
@@ -172,10 +172,10 @@ git push
 ## Amend last commit after push
 
 ```bash
-# Push some previous commit to the remote server
+# push some previous commit to the remote server
 git push
 
-# Oups! We forgot something!
+# oups! We forgot something!
 touch baz.txt
 echo "Baz..." > baz.txt
 git add baz.txt
@@ -183,7 +183,7 @@ git add baz.txt
 # adding baz.txt to the last commit
 git commit --amend --no-edit
 
-# Overwrite the history on the remote server
+# overwrite the history on the remote server
 git push --force
 ```
 
@@ -195,7 +195,9 @@ Do this ONLY if you DON'T work with a team!
 git commit --amend --author "John Doe <johndoe@avine.io>"
 ```
 
-## Merging and rebasing
+## Rebasing and merging
+
+### With "no fast forward" strategy
 
 Assuming someone works on `feature-one`.
 
@@ -210,19 +212,19 @@ touch fruits.txt
 # modify, add and commit
 echo "Orange" > fruits.txt
 git add fruits.txt
-git commit -m "Add orange"
+git commit -m "Add Orange"
 
 # modify, add and commit again (option -am works for already tracked file)
 echo "Banana" >> fruits.txt
-git commit -am "Add banana"
+git commit -am "Add Banana"
 ```
 
-*Logo history of branch feature-one:*
+*Log history of branch feature-one:*
 
 ```txt
 $ git log --oneline --graph --decorate
-* 484dbf6 (HEAD -> feature-one) Add banana
-* c7fc421 Add orange
+* 484dbf6 (HEAD -> feature-one) Add Banana
+* c7fc421 Add Orange
 * 0285f89 (origin/master, origin/HEAD, master) Initial commit
 ```
 
@@ -242,7 +244,7 @@ echo "Java" >> technos.txt
 git commit -am "Add Java"
 ```
 
-*Logo history of branch feature-two:*
+*Log history of branch feature-two:*
 
 ```txt
 $ git log --oneline --graph --decorate
@@ -257,34 +259,38 @@ Next, the first developer is pushing his work.
 # leave branch feature-one and go back to branch master
 git checkout master
 
-# merge feature-one into master (with no fast-forward)
+# merge feature-one into master (with no-fast-forward)
 git merge feature-one --no-ff -m "Merge feature-one"
 
 # push commits to remote origin
 git push origin
 ```
 
-*Logo history of branch master:*
+*Log history of branch master:*
 
 ```txt
 *   0f6ca39 (HEAD -> master, origin/master, origin/HEAD) Merge feature-one
 |\
-| * 484dbf6 (feature-one) Add banana
-| * c7fc421 Add orange
+| * 484dbf6 (feature-one) Add Banana
+| * c7fc421 Add Orange
 |/
 * 0285f89 Initial commit
 ```
 
-Now, how can the other developer also push his work ?
+Now, how can the other developer (who worked on `feature-two`) also push his work ?
 
 ```bash
-# from branch feature-two, update branch master...
-git fetch origin master:master
+# while staying on the branch feature-two, get branch master
+# up-to-date and merged into the current branch
+git pull --rebase origin master:master
 
-# ...and rebase from master before merge (this will do the trick!)
-git rebase master
+# the previous command is equivalent to:
+#   git checkout master
+#   git pull --rebase origin
+#   git checkout feature-two
+#   git rebase master
 
-# back to branch master, merge feature-two into master (with no fast-forward)
+# back to branch master, merge feature-two into master (with no-fast-forward)
 git checkout master
 git merge feature-two --no-ff -m "Merge feature-two"
 
@@ -292,7 +298,7 @@ git merge feature-two --no-ff -m "Merge feature-two"
 git push origin
 ```
 
-*Logo history of branch master:*
+*Log history of branch master:*
 
 ```txt
 $ git log --oneline --graph --decorate
@@ -303,16 +309,16 @@ $ git log --oneline --graph --decorate
 |/
 *   0f6ca39 Merge feature-one
 |\
-| * 484dbf6 Add banana
-| * c7fc421 Add orange
+| * 484dbf6 Add Banana
+| * c7fc421 Add Orange
 |/
 * 0285f89 Initial commit
 ```
 
-Note: without rebasing from master before merging, the log history will not have been so clean!
+So, always merging branches with no-fast-forward option, ensures that each feature has a merge commit.
 
-We can also get a summary of branch master without the intermediate commits with the `--merges` option.
-Merging branches with no fast-forward allows us to view each feature as a single merge commit.
+This is usefull because we can quickly get a summary of what has been developed so far on branch master using `git log --merges`.
+This way, we skip the intermediate commits and focus on the list of features.
 
 ```txt
 $ git log --oneline --graph --decorate --merges
@@ -320,45 +326,39 @@ $ git log --oneline --graph --decorate --merges
 * 0f6ca39 Merge feature-one
 ```
 
-Note: another strategy you an choose, is to always rebase and do fast-forward merges in order to have a single line of history.
+Without rebasing from master before merging, the log history will not have been so clean!
+
+*Log history without rebasing:*
+
+```text
+$  git log --oneline --graph --decorate
+*   518d342 (HEAD -> master, origin/master, origin/HEAD) Merge feature-two
+|\
+| * 36b9e38 (feature-two) Add Java
+| * 6acf6ba Add NodeJs
+* |   cdc7ce7 Merge feature-one
+|\ \
+| |/
+|/|
+| * fa1df45 Add Banana
+| * 6de9efd Add Orange
+|/
+* 0285f89 Initial commit
+```
+
+### With "fast forward" strategy
+
+Another strategy you an choose is to always use `git merge --ff-only` instead of `git merge --no-ff`
+
+If you redo from the begining the commands of the previous section using this strategy then you'll get a single line of history on the branch master.
 
 ```txt
 $ git log --oneline --graph --decorate
 * eee05a6 (HEAD -> master, origin/master, origin/HEAD, feature-two) Add Java
 * 4801abf Add NodeJs
-* 8ec6840 Add banana
-* cc3fdad Add orange
+* 8ec6840 Add Banana
+* cc3fdad Add Orange
 * 0285f89 Initial commit
 ```
 
-
----
-WORK IN PROGRESS...
-
-## Fetching from remote server
-
-Assuming that new commits are available from remote server.
-Thoses commits have been done by another developer.
-And we also have finished our feature and we are ready to merge them into the master.
-
-```bash
-# back to master branch
-git checkout master
-
-# fetch changes from origin
-git fetch origin
-
-# apply changes using rebase strategy (not merge)
-git rebase origin master
-
-# or fetch and rebase at once!
-git pull --rebase origin master
-```
-
-Now that you local repo is up-to-date, you can merge your feature branches on master as we did in the previous section.
-
-
-
-
-TODO: diff entre 2 commits...
-TODO: parler de "git push --set-upstream origin feat-1"
+<!-- TODO: talk about "git diff" between any 2 commits... -->
