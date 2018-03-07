@@ -14,15 +14,17 @@ cd myrepo
 # init local repo with branch called "master"
 git init
 
+# at this point, you should configure your user name and email (see below for details)
+
 # create and commit file
 touch README.md
 git add README.md
 git commit --message "First commit"
 
-# set url of remote repo called "origin"
+# configure url of remote repo called "origin"
 git remote add origin https://github.com/myuser/myrepo.git
 
-# verify added remote
+# check added remote
 git remote --verbose
 
 # push local branch "master" to remote repo "origin"
@@ -37,9 +39,12 @@ git clone https://github.com/myuser/myrepo.git
 
 # navigate to local repo
 cd myrepo
+
+# check that remote is already configured
+git remote -v
 ```
 
-## User config
+## User configuration
 
 Configure user name and email before commiting.
 
@@ -50,34 +55,14 @@ git config user.email contact@avine.io
 
 ## Status and log
 
+View the repo status and history.
+
 ```bash
 git status
 git log --oneline --graph --decorate
 ```
 
-## Branches
-
-```bash
-# list all branches
-git branch --all
-
-# create new branch of master
-git branch feature-one master
-
-# checkout existing branch
-git checkout feature-one
-
-# or create and checkout new branch at once!
-git checkout -b feature-one master
-
-# delete a fully merged branch
-git branch --delete feature-one
-
-# delete a branch whether merged or not
-git branch --delete --force feature-one
-```
-
-## Staging and unstaging
+## Staging and unstaging files
 
 *For new untracked file:*
 
@@ -98,17 +83,19 @@ git reset -- foo.txt
 # modify file previously committed
 echo "More Foo..." >> foo.txt
 
-# staging the modification
+# staging the changes
 git add foo.txt
 
-# unstage the file but keep the modification
+# unstage the file but keep the changes
 git reset -- foo.txt
 
-# revert modification (ONLY for unstaged file)
+# discard changes (ONLY for unstaged file)
 git checkout -- foo.txt
 ```
 
-## Revert all changes (staged on not)
+Note: you must unstage a file before discarding its changes.
+
+## Discard all changes (staged on not)
 
 ```bash
 # modify multiple files
@@ -193,6 +180,28 @@ Do this ONLY if you DON'T work with a team!
 
 ```bash
 git commit --amend --author "John Doe <johndoe@avine.io>"
+```
+
+## Create and delete branches
+
+```bash
+# list all branches
+git branch --all
+
+# create new branch of master
+git branch feature-one master
+
+# checkout existing branch
+git checkout feature-one
+
+# or create and checkout new branch at once!
+git checkout -b feature-one master
+
+# delete a fully merged branch
+git branch --delete feature-one
+
+# delete a branch whether merged or not
+git branch --delete --force feature-one
 ```
 
 ## Rebasing and merging
