@@ -204,7 +204,7 @@ git branch --delete feature-one
 git branch --delete --force feature-one
 ```
 
-## Rebasing and merging
+## Rebase and merge branches
 
 ### Using "no fast forward" strategy
 
