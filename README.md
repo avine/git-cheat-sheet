@@ -357,7 +357,7 @@ $  git log --oneline --graph --decorate
 
 ### Using "fast forward only" strategy
 
-Another strategy you an choose is to always use `git merge --ff-only` instead of `git merge --no-ff`
+Another strategy you can choose is to always use `git merge --ff-only` instead of `git merge --no-ff`
 
 If you redo from the begining the commands of the previous section using this strategy then you'll get a single line of history on the branch master.
 
