@@ -372,9 +372,9 @@ $ git log --oneline --graph --decorate
 
 ### Using "squash commits" strategy
 
-Another strategy you can choose is to squash all commits in a feature into a single commit.
+Another strategy you can choose is to squash all commits in a feature branch into a single commit.
 
-*Let say that the log history is as following:*
+*Let's say that the log history is as following:*
 
 ```txt
 $ git checkout master
@@ -432,13 +432,13 @@ Add Orange
 Add Banana
 ````
 
-Change the file to this (and save the file):
+Change the file to this (and save it):
 
 ```txt
 Add Orange and Banana
 ````
 
-Now, the log history will looks like the following:
+Now, the log history will look like the following:
 
 ```txt
 $ git log --oneline --graph --decorate
@@ -462,5 +462,5 @@ $ git log --oneline --graph --decorate
 0285f89 (origin/master, origin/HEAD, master) First commit
 ```
 
-This strategy is really great if your feature branch is made of a lot of commits.
-After a pull request, you just want to squash all your commits into a single one and merge it into the master branch.
+This strategy is really great if your feature branch is made up of a lot of commits.
+In this case, you typically want to squash all your commits into one and merge it into the master branch.
