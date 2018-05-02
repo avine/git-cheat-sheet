@@ -174,7 +174,7 @@ git commit --amend --no-edit
 git push --force
 ```
 
-Do this ONLY if you DON'T work with a team!
+> Do this ONLY if you DON'T work with a team!
 
 ## Amend last commit author
 
@@ -370,4 +370,97 @@ $ git log --oneline --graph --decorate
 * 0285f89 Initial commit
 ```
 
-<!-- TODO: talk about "git diff" between any 2 commits... -->
+### Using "squash commits" strategy
+
+Another strategy you can choose is to squash all commits in a feature into a single commit.
+
+*Let say that the log history is as following:*
+
+```txt
+$ git checkout master
+
+$ git log --oneline --graph --decorate
+* 0285f89 (origin/master, origin/HEAD, master) Initial commit
+
+$ git checkout feature-one
+
+$ git log --oneline --graph --decorate
+* 484dbf6 (HEAD -> feature-one) Add Banana
+* c7fc421 Add Orange
+* 0285f89 (origin/master, origin/HEAD, master) Initial commit
+
+$ git checkout feature-two
+
+$ git log --oneline --graph --decorate
+* 64364db (HEAD -> feature-two) Add Java
+* 120e8c2 Add NodeJs
+* 0285f89 (origin/master, origin/HEAD, master) Initial commit
+```
+
+Let's go to branch `feature-one` and start interactive rebase.
+
+```txt
+$ git checkout feature-one
+$ git rebase --intercative master
+```
+
+This will open up your editor with the following file content:
+
+```txt
+pick c7fc421 Add Orange
+pick 484dbf6 Add Banana
+```
+
+Change the file to this:
+
+```txt
+pick c7fc421 Add Orange
+squash 484dbf6 Add Banana
+```
+
+(Type `I` to enter `--INSERT--` mode and `ESC` + `:wq` to write and quit the file when you're done).
+
+This will open up again your editor with the following file content:
+
+```txt
+# This is the 1st commit message:
+
+Add Orange
+
+# This is the commit message #2:
+
+Add Banana
+````
+
+Change the file to this (and save the file):
+
+```txt
+Add Orange and Banana
+````
+
+Now, the log history will looks like the following:
+
+```txt
+$ git log --oneline --graph --decorate
+1eda1fa (HEAD -> feature-one) Add Orange and Banana
+0285f89 (origin/master, origin/HEAD, master) First commit
+```
+
+Merge the `feature-one` on branch master:
+
+```txt
+git checkout master
+git merge feature-one
+```
+
+Do the same rebasing on branch `feature-two`, and you will get the following:
+
+```txt
+$ git log --oneline --graph --decorate
+1d1e743 (HEAD -> feature-two) Add NodeJs and Java
+1eda1fa (HEAD -> feature-one) Add Orange and Banana
+0285f89 (origin/master, origin/HEAD, master) First commit
+```
+
+This strategy is really great if your feature branch is made of a lot of commits.
+After a pull request, you just want to squash all your commits into a single one and merge it into the master branch.
