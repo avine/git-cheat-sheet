@@ -397,21 +397,21 @@ $ git log --oneline --graph --decorate
 * 0285f89 (origin/master, origin/HEAD, master) Initial commit
 ```
 
-Let's go to branch `feature-one` and start interactive rebase.
+*Let's go to branch `feature-one` and start interactive rebase.*
 
 ```txt
 $ git checkout feature-one
 $ git rebase --intercative master
 ```
 
-This will open up your editor with the following file content:
+*This will open up your editor with the following file content:*
 
 ```txt
 pick c7fc421 Add Orange
 pick 484dbf6 Add Banana
 ```
 
-Change the file to this:
+*Change the file to this:*
 
 ```txt
 pick c7fc421 Add Orange
@@ -420,7 +420,7 @@ squash 484dbf6 Add Banana
 
 (Type `I` to enter `--INSERT--` mode and `ESC` + `:wq` to write and quit the file when you're done).
 
-This will open up again your editor with the following file content:
+*This will open up again your editor with the following file content:*
 
 ```txt
 # This is the 1st commit message:
@@ -432,13 +432,13 @@ Add Orange
 Add Banana
 ````
 
-Change the file to this (and save it):
+*Change the file to this (and save it):*
 
 ```txt
 Add Orange and Banana
 ````
 
-Now, the log history will look like the following:
+*Now, the log history will look like the following:*
 
 ```txt
 $ git log --oneline --graph --decorate
@@ -446,14 +446,14 @@ $ git log --oneline --graph --decorate
 0285f89 (origin/master, origin/HEAD, master) First commit
 ```
 
-Merge the `feature-one` on branch master:
+*Merge the `feature-one` on branch master:*
 
 ```txt
 git checkout master
 git merge feature-one
 ```
 
-Do the same rebasing on branch `feature-two`, and you will get the following:
+*Do the same rebasing on branch `feature-two`, and you will get the following:*
 
 ```txt
 $ git log --oneline --graph --decorate
