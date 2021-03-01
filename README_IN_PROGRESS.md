@@ -2,13 +2,13 @@
 
 ## Concepts
 
-Git a distributed, meaning every one who has the repository, has the full history of the project.
+Git is distributed, meaning every one who has the repository, has the full history of the project.
 
 Naming:
 
 - The Working directory is also named Working tree.
 - The Staging area is also named Index.
-- The repository
+- The Repository
 
 Each commit contains a complete snapshot of the project.
 
@@ -153,11 +153,15 @@ git clean -d --interactive
 
 Notice that is will not touch the files listed in `.gitignore`.
 
-### Adding modified files to the staging area
+### Adding files to the staging area
 
 ```bash
 git add <FILES>
 ```
+
+If the file was untracked, it becomes tracked.
+If the file was modified in the working directory, it becomes staged.
+If the file was deleted in the working directory, it becomes deleted in the staging area.
 
 ### Removing files from both the working directory and the staging area
 
@@ -206,12 +210,18 @@ git restore --staged <FILES>
 
 #### Listing all files in the staging area
 
+Returns the list of all tracked files.
+
 ```bash
 git ls-files
 git ls-files --cached # equivalent
 ```
 
-If there's nothing to commit, it returns the full list of tracked files.
+#### Listing all untracked files in the working directory
+
+```bash
+git ls-files --others --exclude-standard
+```
 
 ### Diffing between the working directory and the staging area
 
@@ -233,10 +243,10 @@ If you are only interested in the list of files related in the `diff`, run:
 ```bash
 # Listing files in the staging area that have been modified in the working directory
 git diff --name-only
-git ls-files --modified # equivalend
+git ls-files --modified # equivalent
 
 # Listing files in the last commit that have been modified in the staging area
-git diff --name-only --staged
+git diff --staged --name-only
 ```
 
 ### Status
